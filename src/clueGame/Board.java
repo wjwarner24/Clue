@@ -49,18 +49,20 @@ public class Board {
         }
         visited.add(startCell);
         for (BoardCell adjCell : startCell.getAdjList()) {
+            //no need to visit a cell that has already been visited in this path
             if (!visited.contains(adjCell)) {
-                
+                //if an adjacent cell is a room, we can just add it to the targets
                 if (adjCell.isRoom()) {
                     targets.add(adjCell);
                 }
                 else if (adjCell.isOccupied()) {
-
+                    
                 }
                 else if (pathLength == 1) {
                     targets.add(adjCell);
                 }
                 else {
+                    //recursive call with a pathLength that is one less
                     calcTargets(adjCell, pathLength - 1, initialCell);
                     visited.remove(adjCell);
                 } 
