@@ -72,6 +72,13 @@ public class BoardCell {
         return true;
     }
 
+    public boolean isWalkway() {
+        if (name.charAt(0) == 'W') {
+            return true;
+        }
+        return false;
+    }
+
     public DoorDirection getDoorDirection() {
         return direction;
     }

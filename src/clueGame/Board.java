@@ -207,18 +207,18 @@ public class Board {
         }
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                if (board[r][c].getName().charAt(0) == 'W') {
+                if (board[r][c].isWalkway()) {
 
-                    if (r != 0 && board[r-1][c].getName().charAt(0) == 'W') {
+                    if (r != 0 && board[r-1][c].isWalkway()) {
                         board[r][c].addAdjacency(board[r - 1][c]);
                     }
-                    if (r < rows - 1 && board[r+1][c].getName().charAt(0) == 'W') {
+                    if (r < rows - 1 && board[r+1][c].isWalkway()) {
                         board[r][c].addAdjacency(board[r + 1][c]);
                     }
-                    if (c != 0 && board[r][c-1].getName().charAt(0) == 'W') {
+                    if (c != 0 && board[r][c-1].isWalkway()) {
                         board[r][c].addAdjacency(board[r][c - 1]);
                     }
-                    if (c < cols - 1 && board[r][c+1].getName().charAt(0) == 'W') {
+                    if (c < cols - 1 && board[r][c+1].isWalkway()) {
                         board[r][c].addAdjacency(board[r][c + 1]);
                     }
 
