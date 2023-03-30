@@ -241,7 +241,8 @@ public class Board {
                         }
         
                         BoardCell tempCenter = tempRoom.getCenterCell();
-                        
+                        //if current cell in double for loop is a door, we add an adjacency
+                        //to the room center, and also add an adjacency from the room center to the doorway
                         board[r][c].addAdjacency(tempCenter);
                         tempCenter.addAdjacency(board[r][c]);
                     }
