@@ -1,0 +1,18 @@
+explanations of some test cases in FileInitTests.java
+
+testing the door directions:
+    (2,7) has a door pointing left which is tested
+    (4,17) has a door pointing right which is tested
+    (7,4) has a door pointing up which is tested
+    (16,3) has a door pointing down which is tested
+
+testing for number of doors
+    just by sheer chance, my game board has 17 doors, the exact number in the FileInitTests306.java.
+    I placed my doors pretty randomly and did not count them, but alas this method is an exact copy of the provided one.
+
+testing rooms
+    I selected random cells from some rooms to test
+
+
+hopefully this is enough info for this file, have a good day!
+    
