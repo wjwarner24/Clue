@@ -248,7 +248,8 @@ public class Board {
                     }
 
                 }
-
+                //if current cell is a room center and it has a secret passage, we add an adjacency from
+                //the cell to the center cell of the room which the passage goes to
                 if (board[r][c].isRoomCenter() && board[r][c].getRoom().getPassageDestination() != null) {
                     board[r][c].addAdjacency(board[r][c].getRoom().getPassageDestination().getCenterCell());
                 }
