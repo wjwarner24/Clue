@@ -48,21 +48,21 @@ public class Board {
             clearTargets();
         }
         visited.add(startCell);
-        for (BoardCell t : startCell.getAdjList()) {
-            if (!visited.contains(t)) {
+        for (BoardCell adjCell : startCell.getAdjList()) {
+            if (!visited.contains(adjCell)) {
                 
-                if (t.isRoom()) {
-                    targets.add(t);
+                if (adjCell.isRoom()) {
+                    targets.add(adjCell);
                 }
-                else if (t.isOccupied()) {
+                else if (adjCell.isOccupied()) {
 
                 }
                 else if (pathLength == 1) {
-                    targets.add(t);
+                    targets.add(adjCell);
                 }
                 else {
-                    calcTargets(t, pathLength - 1, initialCell);
-                    visited.remove(t);
+                    calcTargets(adjCell, pathLength - 1, initialCell);
+                    visited.remove(adjCell);
                 } 
             }
         }
