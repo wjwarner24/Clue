@@ -125,9 +125,9 @@ public class Board {
                 line = scanner.nextLine();
 
             }
-            String[] chars = line.split(",");
+            String[] cellNames = line.split(",");
 
-            this.cols = chars.length;
+            this.cols = cellNames.length;
             this.rows = tempRows;
             scanner.close();
 
@@ -137,29 +137,29 @@ public class Board {
             scanner = new Scanner(layoutFile);
             for (int r = 0; r < rows; r++) {
                 line = scanner.nextLine();
-                chars = line.split(",");
+                cellNames = line.split(",");
                 for (int c = 0; c < cols; c++) {
                     // Throws exception if each collumn is not expected length
-                    if (cols != chars.length) {
+                    if (cols != cellNames.length) {
                         scanner.close();
                         System.err.println("Collumns are not consistent among each row");
                         throw new BadConfigFormatException("Collumns are not consistent among each row");
                     }
 
-                    board[r][c] = new BoardCell(r, c, chars[c]);
-                    if (chars[c].contains(">")) {
+                    board[r][c] = new BoardCell(r, c, cellNames[c]);
+                    if (cellNames[c].contains(">")) {
                         board[r][c].setDoorDirection(DoorDirection.RIGHT);
-                    } else if (chars[c].contains("<")) {
+                    } else if (cellNames[c].contains("<")) {
                         board[r][c].setDoorDirection(DoorDirection.LEFT);
-                    } else if (chars[c].contains("^")) {
+                    } else if (cellNames[c].contains("^")) {
                         board[r][c].setDoorDirection(DoorDirection.UP);
-                    } else if (chars[c].contains("v")) {
+                    } else if (cellNames[c].contains("v")) {
                         board[r][c].setDoorDirection(DoorDirection.DOWN);
                     } else {
                         board[r][c].setDoorDirection(DoorDirection.NONE);
                     }
 
-                    Room tempRoom = this.getRoom(chars[c].charAt(0));
+                    Room tempRoom = this.getRoom(cellNames[c].charAt(0));
                     if (tempRoom.getName().equals("error")) {
                         scanner.close();
                         throw new BadConfigFormatException("BoardCell contains room not specified in setup file [" + r + ", " + c + "]");
