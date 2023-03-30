@@ -94,13 +94,13 @@ public class Board {
             while (scanner.hasNextLine()) {
                 line = scanner.nextLine();
                 if (!line.contains("//")) {
-                    String[] arr = line.split(", ");
+                    String[] setupWords = line.split(", ");
                     //setup file must be in format: Room, Name, 'N'
-                    if (!(arr[0].equals("Room") || arr[0].equals("Space"))) {
+                    if (!(setupWords[0].equals("Room") || setupWords[0].equals("Space"))) {
                         scanner.close();
                         throw new BadConfigFormatException("Bad format for Setup file");
                     }
-                    rooms.add(new Room(arr[1], arr[2].charAt(0)));
+                    rooms.add(new Room(setupWords[1], setupWords[2].charAt(0)));
                 }
             }
 
