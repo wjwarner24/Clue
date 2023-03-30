@@ -147,6 +147,7 @@ public class Board {
                     }
 
                     board[r][c] = new BoardCell(r, c, cellNames[c]);
+                    //sets the doorDirection of each BoardCell
                     if (cellNames[c].contains(">")) {
                         board[r][c].setDoorDirection(DoorDirection.RIGHT);
                     } else if (cellNames[c].contains("<")) {
@@ -165,12 +166,17 @@ public class Board {
                         throw new BadConfigFormatException("BoardCell contains room not specified in setup file [" + r + ", " + c + "]");
                     }
                     board[r][c].setRoom(tempRoom);
+                    //sets label cells for each room
                     if (board[r][c].isLabel()) {
                         board[r][c].getRoom().setlabelCell(board[r][c]);
                     }
+                    //sets center cells for each room
                     if (board[r][c].isRoomCenter()) {
                         board[r][c].getRoom().setCenterCell(board[r][c]);
                     }
+                    //sets secret passage destination for each room that has one
+                    //this if statement got quite complicated
+                    //a boardCell with a length greater than one and the 2nd char is alphabetical means that it is a secret passage
                     if (board[r][c].getName().length() > 1 && Character.isAlphabetic(board[r][c].getName().charAt(1))) {
                         board[r][c].setSecretPassage(board[r][c].getName().charAt(1));
                         board[r][c].getRoom().setPassageDestination(this.getRoom(board[r][c].getName().charAt(1)));
