@@ -11,3 +11,17 @@ Room, Hall, H
 // other spaces on board
 Space, Unused, X
 Space, Walkway, W
+//added people to make tests pass
+Player, Name1, Red, 0, 7, true
+Player, Name2, Blue, 2, 17, false
+Player, Name3, Green, 7, 23, false
+Player, Name4, Yellow, 18, 23, false
+Player, Name5, Black, 25, 18, false
+Player, Name6, White, 25, 10, false
+//added weapons to make tests pass
+Weapon, Glass Bottle
+Weapon, Sharp Fingernail
+Weapon, Katana
+Weapon, Butter Knife
+Weapon, Sharp Pencil
+Weapon, Brass Knuckles

@@ -26,6 +26,9 @@ public class Board {
     private File setupFile;
     private File layoutFile;
     private ArrayList<Room> rooms;
+    private ArrayList<Player> players;
+    private ArrayList<Card> cards;
+    private ArrayList<Card> solution;
 
     private static Board theInstance = new Board();
 
@@ -35,6 +38,9 @@ public class Board {
         visited = new HashSet<BoardCell>();
         rooms = new ArrayList<Room>();
         targets = new HashSet<BoardCell>();
+        players = new ArrayList<Player>();
+        cards = new ArrayList<Card>();
+        solution = new ArrayList<Card>();
     }
 
     //returns this instance
@@ -88,6 +94,9 @@ public class Board {
     //parses the setup file to initialize rooms
     public void loadSetupConfig() throws BadConfigFormatException {
         rooms.clear();
+        players.clear();
+        cards.clear();
+        solution.clear();
         Scanner scanner;
 
         try {
@@ -98,11 +107,38 @@ public class Board {
                 if (!line.contains("//")) {
                     String[] setupWords = line.split(", ");
                     //setup file must be in format: Room, Name, 'N'
-                    if (!(setupWords[0].equals("Room") || setupWords[0].equals("Space"))) {
+                    if (!(setupWords[0].equals("Room") || setupWords[0].equals("Space") || setupWords[0].equals("Player") || setupWords[0].equals("Weapon"))) {
                         scanner.close();
                         throw new BadConfigFormatException("Bad format for Setup file");
                     }
-                    rooms.add(new Room(setupWords[1], setupWords[2].charAt(0)));
+                    if (setupWords[0].equals("Room") || setupWords[0].equals("Space")) {
+                        rooms.add(new Room(setupWords[1], setupWords[2].charAt(0)));
+                        if (setupWords[0].equals("Room")) {
+                            cards.add(new Card(setupWords[1], CardType.ROOM));
+                        }
+                        
+                    }
+                    else if (setupWords[0].equals("Player")) {
+                        int tempRow = Integer.valueOf(setupWords[3]);
+                        int tempCol = Integer.valueOf(setupWords[4]);
+                        boolean tempIsHuman = Boolean.parseBoolean(setupWords[5]);
+
+                        cards.add(new Card(setupWords[1], CardType.PERSON));
+
+                        if (setupWords[5].equals("true")) {
+                            players.add(new HumanPlayer(setupWords[1], setupWords[2], tempRow, tempCol, tempIsHuman));
+                        }
+                        else {
+                            players.add(new ComputerPlayer(setupWords[1], setupWords[2], tempRow, tempCol, tempIsHuman));
+                        }
+                    }
+                    else if (setupWords[0].equals("Weapon")) {
+                        cards.add(new Card(setupWords[1], CardType.WEAPON));
+                    }
+                    else {
+                        scanner.close();
+                        throw new BadConfigFormatException("Unrecognized type in Setup file");
+                    }
                 }
             }
 
@@ -207,6 +243,54 @@ public class Board {
         } catch (BadConfigFormatException e) {
             System.err.println("Bad Configuration for layout file");
         }
+
+        //set solution
+        Collections.shuffle(cards);
+        
+        int index = 0;
+        while (!(cards.get(index).getCardType() == CardType.PERSON)) {
+            index++;
+        }
+        cards.get(index).setSolution(true);
+        solution.add(cards.get(index));
+        cards.remove(index);
+
+        index = 0;
+        while (!(cards.get(index).getCardType() == CardType.ROOM)) {
+            index++;
+        }
+        cards.get(index).setSolution(true);
+        solution.add(cards.get(index));
+        cards.remove(index);
+
+        index = 0;
+        while (!(cards.get(index).getCardType() == CardType.WEAPON)) {
+            index++;
+        }
+        cards.get(index).setSolution(true);
+        solution.add(cards.get(index));
+        cards.remove(index);
+        
+        
+
+        //now we must deal the cards in the ArrayList to players
+
+        for (int i = 0; i < 3; i++) {
+            players.get(i).clearHand();
+        }
+        Collections.shuffle(cards);
+        for (int p = 0; p < 18; p+= 3) {
+            players.get(p / 3).addCard(cards.get(p));
+            players.get(p / 3).addCard(cards.get(p + 1));
+            players.get(p / 3).addCard(cards.get(p + 2));
+        }
+
+        //add the previosly removed solution cards back to the deck to pass tests
+        //these cards will be in the final 3 indices
+        cards.add(solution.get(0));
+        cards.add(solution.get(1));
+        cards.add(solution.get(2));
+
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
                 if (board[r][c].isWalkway()) {
@@ -296,4 +380,18 @@ public class Board {
         targets.clear();
         visited.clear();
     }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public ArrayList<Card> getCards() {
+        return cards;
+    }
+
+    public ArrayList<Card> getSolution() {
+        return solution;
+    }
+
+
 }
