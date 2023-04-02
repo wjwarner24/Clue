@@ -118,6 +118,8 @@ public class Board {
                         }
                         
                     }
+                    //Player layout in Setup file
+                    //Player, Name, Color, row, col, true/false
                     else if (setupWords[0].equals("Player")) {
                         int tempRow = Integer.valueOf(setupWords[3]);
                         int tempCol = Integer.valueOf(setupWords[4]);

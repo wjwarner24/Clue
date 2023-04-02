@@ -2,6 +2,16 @@ package clueGame;
 
 import java.util.ArrayList;
 
+//Player Class
+//Author: William Warner
+//Created April 2nd, 2023
+//No Collaboraters or outside sources
+
+//Player represents a player in the Clue game
+//This is an abstract class that is a parent to HumanPlayer and ComnputerPlayer
+//contains info on the player as shown in the member variables below
+
+
 public abstract class Player {
     private String name;
     private String color;

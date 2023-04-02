@@ -1,5 +1,17 @@
 package clueGame;
 
+//Card Class
+//Author: William Warner
+//Created April 2nd, 2023
+//No Collaboraters or outside sources
+
+//Card represents a card in the Clue Game
+//each card has a name and a type (Person, Weapon, or Room)
+//also each card has a boolean indiciating whether it is part
+//of the solution or not
+//Contains standard getter/setter methods
+
+
 public class Card {
     private String cardName;
     private CardType cardType;
