@@ -24,6 +24,8 @@ public class Card {
     }
 
     public boolean equals(Card card) {
+        String thisName = cardName;
+        String otherName = card.getName();
         return cardName.equals(card.getName());
     }
 
@@ -41,5 +43,10 @@ public class Card {
 
     public void setSolution(boolean b) {
         solution = b;
+    }
+
+    @Override
+    public boolean equals(Object b) {
+        return this.equals((Card) b);
     }
 }

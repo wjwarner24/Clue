@@ -28,7 +28,11 @@ public class Board {
     private ArrayList<Room> rooms;
     private ArrayList<Player> players;
     private ArrayList<Card> cards;
-    private ArrayList<Card> solution;
+    private Solution solution;
+
+    Set<Card> weaponCards = new HashSet<Card>();
+    Set<Card> roomCards = new HashSet<Card>();
+    Set<Card> personCards = new HashSet<Card>();
 
     private static Board theInstance = new Board();
 
@@ -40,7 +44,7 @@ public class Board {
         targets = new HashSet<BoardCell>();
         players = new ArrayList<Player>();
         cards = new ArrayList<Card>();
-        solution = new ArrayList<Card>();
+        solution = new Solution();
     }
 
     //returns this instance
@@ -96,7 +100,6 @@ public class Board {
         rooms.clear();
         players.clear();
         cards.clear();
-        solution.clear();
         Scanner scanner;
 
         try {
@@ -115,6 +118,7 @@ public class Board {
                         rooms.add(new Room(setupWords[1], setupWords[2].charAt(0)));
                         if (setupWords[0].equals("Room")) {
                             cards.add(new Card(setupWords[1], CardType.ROOM));
+                            roomCards.add(new Card(setupWords[1], CardType.ROOM));
                         }
                         
                     }
@@ -126,6 +130,7 @@ public class Board {
                         boolean tempIsHuman = Boolean.parseBoolean(setupWords[5]);
 
                         cards.add(new Card(setupWords[1], CardType.PERSON));
+                        personCards.add(new Card(setupWords[1], CardType.PERSON));
 
                         if (setupWords[5].equals("true")) {
                             players.add(new HumanPlayer(setupWords[1], setupWords[2], tempRow, tempCol, tempIsHuman));
@@ -136,6 +141,7 @@ public class Board {
                     }
                     else if (setupWords[0].equals("Weapon")) {
                         cards.add(new Card(setupWords[1], CardType.WEAPON));
+                        weaponCards.add(new Card(setupWords[1], CardType.WEAPON));
                     }
                     else {
                         scanner.close();
@@ -254,7 +260,7 @@ public class Board {
             index++;
         }
         cards.get(index).setSolution(true);
-        solution.add(cards.get(index));
+        solution.setPersonCard(cards.get(index));
         cards.remove(index);
 
         index = 0;
@@ -262,7 +268,7 @@ public class Board {
             index++;
         }
         cards.get(index).setSolution(true);
-        solution.add(cards.get(index));
+        solution.setRoomCard(cards.get(index));
         cards.remove(index);
 
         index = 0;
@@ -270,7 +276,7 @@ public class Board {
             index++;
         }
         cards.get(index).setSolution(true);
-        solution.add(cards.get(index));
+        solution.setWeaponCard(cards.get(index));
         cards.remove(index);
         
         
@@ -289,9 +295,9 @@ public class Board {
 
         //add the previosly removed solution cards back to the deck to pass tests
         //these cards will be in the final 3 indices
-        cards.add(solution.get(0));
-        cards.add(solution.get(1));
-        cards.add(solution.get(2));
+        cards.add(solution.getPersonCard());
+        cards.add(solution.getRoomCard());
+        cards.add(solution.getWeaponCard());
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
@@ -391,8 +397,42 @@ public class Board {
         return cards;
     }
 
-    public ArrayList<Card> getSolution() {
+    public Solution getSolution() {
         return solution;
+    }
+
+    //checks whether a given accusation is correct
+    public boolean checkAccusation(Solution accusation) {
+        return this.solution.equals(accusation);
+    }
+
+    //handles a suggestion, calls the method disproveSuggestion from each player
+    public Card handleSuggestion(ArrayList<Card> suggestion, int playerNum) {
+
+        for (int i = playerNum + 1; i < playerNum + 6; i++) {
+            int adjustedPlayerNum = i % 6;
+            if (players.get(adjustedPlayerNum).disproveSuggestion(suggestion) != null) {
+                return players.get(adjustedPlayerNum).disproveSuggestion(suggestion);
+            }
+        }
+
+
+        return null;
+    }
+
+    //allows to set the solution for testing
+    public void setSolution(Solution sol) {
+        this.solution = sol;
+    }
+
+    public Set<Card> getWeaponCards() {
+        return weaponCards;
+    }
+    public Set<Card> getPersonCards() {
+        return personCards;
+    }
+    public Set<Card> getRoomCards() {
+        return roomCards;
     }
 
 

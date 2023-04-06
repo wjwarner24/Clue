@@ -1,6 +1,6 @@
 package clueGame;
 
-import java.util.ArrayList;
+import java.util.*;
 
 //Player Class
 //Author: William Warner
@@ -18,7 +18,9 @@ public abstract class Player {
     private int row;
     private int col;
     private ArrayList<Card> cards;
+    private Set<Card> seenCards;
     private boolean isHuman;
+    private int number;
 
     public Player() {
 
@@ -31,6 +33,15 @@ public abstract class Player {
         this.col = col;
         this.isHuman = isHuman;
         cards = new ArrayList<Card>();
+        seenCards = new HashSet<Card>();
+    }
+
+    public void setNumber(int num) {
+        number = num;
+    }
+
+    public int getNumber() {
+        return number;
     }
 
     public void addCard(Card card) {
@@ -63,5 +74,49 @@ public abstract class Player {
 
     public void clearHand() {
         cards.clear();
+    }
+
+    //if player has a card in the suggestion, it must show that card
+    //if not, return null
+    public Card disproveSuggestion(ArrayList<Card> suggestion) {
+        for (Card c : suggestion) {
+            if (cards.get(0).equals(c)) {
+                return cards.get(0);
+            }
+            if (cards.get(1).equals(c)) {
+                return cards.get(1);
+            }
+            if (cards.get(2).equals(c)) {
+                return cards.get(2);
+            }
+        }
+        return null;
+    }
+
+    public void addSeenCard(Card card) {
+        seenCards.add(card);
+    }
+
+    //allows us to set the cards for testing
+    public void setCards(ArrayList<Card> hand) {
+        cards = hand;
+    }
+
+    public void move(BoardCell dest) {
+        row = dest.getRow();
+        col = dest.getCol();
+        dest.setOccupied(true);
+    }
+
+    public BoardCell getCell() {
+        return Board.getInstance().getCell(getRow(), getCol());
+    }
+
+    public Room getRoom() {
+        return Board.getInstance().getCell(getRow(), getCol()).getRoom();
+    }
+
+    public Set<Card> getSeenCards() {
+        return seenCards;
     }
 }

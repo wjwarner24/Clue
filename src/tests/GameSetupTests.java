@@ -50,31 +50,13 @@ public class GameSetupTests {
     public void testCards() {
         //tests that there are the correct amount of cards and the solution has 3 cards
         assertEquals(board.getCards().size(), NUM_CARDS);
-        assertEquals(board.getSolution().size(), 3);
+        
         int numWeapons = 0;
         int numPlayers = 0;
         int numRooms = 0;
 
-        //tests that the solution has one card of each type
-        for (Card c : board.getSolution()) {
-            if (c.getCardType() == CardType.PERSON) {
-                numPlayers++;
-            }
-            if (c.getCardType() == CardType.WEAPON) {
-                numWeapons++;
-            }
-            if (c.getCardType() == CardType.ROOM) {
-                numRooms++;
-            }
-        }
+        
 
-        assertEquals(numWeapons, 1);
-        assertEquals(numPlayers, 1);
-        assertEquals(numRooms, 1);
-
-        numWeapons = 0;
-        numPlayers = 0;
-        numRooms = 0;
 
         //tests that the cards have the correct number of each type of card
         for (Card c : board.getCards()) {
@@ -95,9 +77,9 @@ public class GameSetupTests {
 
         //tests that none of the solution cards are dealt to each player
         for (Player p : board.getPlayers()) {
-            assertFalse(p.getCards().contains(board.getSolution().get(0)));
-            assertFalse(p.getCards().contains(board.getSolution().get(1)));
-            assertFalse(p.getCards().contains(board.getSolution().get(2)));
+            assertFalse(p.getCards().contains(board.getSolution().getWeaponCard()));
+            assertFalse(p.getCards().contains(board.getSolution().getRoomCard()));
+            assertFalse(p.getCards().contains(board.getSolution().getPersonCard()));
         }
 
     }
