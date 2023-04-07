@@ -23,6 +23,8 @@ public class ComputerPlayer extends Player {
         super(name, color, row, col, isHuman);
     }
 
+    
+
     public BoardCell selectTarget(int diceRoll) {
         
         BoardCell position = Board.getInstance().getCell(super.getRow(), super.getCol());

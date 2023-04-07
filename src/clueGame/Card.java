@@ -24,8 +24,6 @@ public class Card {
     }
 
     public boolean equals(Card card) {
-        String thisName = cardName;
-        String otherName = card.getName();
         return cardName.equals(card.getName());
     }
 
