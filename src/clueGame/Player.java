@@ -1,6 +1,8 @@
 package clueGame;
 
 import java.util.*;
+import java.awt.*;
+import java.lang.reflect.Field;
 
 //Player Class
 //Author: William Warner
@@ -14,13 +16,14 @@ import java.util.*;
 
 public abstract class Player {
     private String name;
-    private String color;
+    private String color; //TODO make this field type Color
     private int row;
     private int col;
     private ArrayList<Card> cards;
     private Set<Card> seenCards;
     private boolean isHuman;
     private int number;
+    private boolean finished = false;
 
     public Player() {
 
@@ -103,9 +106,11 @@ public abstract class Player {
     }
 
     public void move(BoardCell dest) {
+        Board.getInstance().getCell(row, col).setOccupied(false);
         row = dest.getRow();
         col = dest.getCol();
         dest.setOccupied(true);
+        Board.getInstance().repaint();
     }
 
     public BoardCell getCell() {
@@ -118,5 +123,35 @@ public abstract class Player {
 
     public Set<Card> getSeenCards() {
         return seenCards;
+    }
+
+    public void draw(Graphics g , int cellWidth, int cellHeight) {
+        int leftBorder = col * cellWidth;
+        int topBorder = row * cellHeight;
+
+        Color color;
+        try {
+        Field field = Class.forName("java.awt.Color").getField(this.getColor());
+        color = (Color)field.get(null);
+        }
+        catch (Exception e) {
+            color = null;
+        }
+        //System.out.println(color.toString());
+        g.setColor(color);
+        g.drawOval(leftBorder, topBorder, cellWidth, cellHeight);
+        g.fillOval(leftBorder, topBorder, cellWidth, cellHeight);
+    }
+
+    public void setFinished(boolean b) {
+        finished = b;
+    }
+    public boolean isFinished() {
+        return finished;
+    }
+
+    //TODO; add overlapping code here from player classes
+    public void handleTurn() {
+
     }
 }

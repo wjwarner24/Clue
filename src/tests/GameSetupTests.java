@@ -32,13 +32,13 @@ public class GameSetupTests {
 		assertEquals(NUM_PLAYERS, board.getPlayers().size());
 
         assertTrue(board.getPlayers().get(0).getName().equals("Name1"));
-        assertTrue(board.getPlayers().get(0).getColor().equals("Red"));
+        assertTrue(board.getPlayers().get(0).getColor().equals("red"));
         assertTrue(board.getPlayers().get(0).isHuman());
         assertEquals(board.getPlayers().get(0).getRow(), 0);
         assertEquals(board.getPlayers().get(0).getCol(), 7);
 
         assertTrue(board.getPlayers().get(5).getName().equals("Name6"));
-        assertTrue(board.getPlayers().get(5).getColor().equals("White"));
+        assertTrue(board.getPlayers().get(5).getColor().equals("white"));
         assertFalse(board.getPlayers().get(5).isHuman());
         assertEquals(board.getPlayers().get(5).getRow(), 25);
         assertEquals(board.getPlayers().get(5).getCol(), 10);

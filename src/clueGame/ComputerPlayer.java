@@ -38,12 +38,17 @@ public class ComputerPlayer extends Player {
                 return bc;
             }
         }
-        Set<BoardCell> targets = Board.getInstance().getTargets();
-        BoardCell[] targetArray = targets.toArray(new BoardCell[targets.size()]);
-        int size = targetArray.length;
+        
+    
+        ArrayList<BoardCell> targetArrayList = new ArrayList<BoardCell>(Board.getInstance().getTargets());
+        
+        int size = targetArrayList.size();
+        if (size == 0) {
+            return null;
+        }
         Random random = new Random();
         int rand = random.nextInt(size);
-        return targetArray[rand];
+        return targetArrayList.get(rand);
 
     }
 
@@ -122,5 +127,26 @@ public class ComputerPlayer extends Player {
     //allows us to set a room as seen for testing
     public void addSeenRoom(Room room) {
         seenRooms.add(room);
+    }
+
+    //handles a computer player's turn
+    @Override
+    public void handleTurn() {
+        super.setFinished(false);
+        Random rand = new Random();
+        int diceRoll = rand.nextInt(6) + 1;
+        GameControlPanel.getInstance().setTurn(this);
+        GameControlPanel.getInstance().setDiceRoll(diceRoll);
+        CardsPanel.getInstance().setHand(super.getCards());
+        ArrayList<Card> seenCards = new ArrayList<Card>(super.getSeenCards());
+        CardsPanel.getInstance().setSeenCards(seenCards);
+        CardsPanel.getInstance().refresh();
+        BoardCell destination = this.selectTarget(diceRoll);
+        if (destination != null) {
+            super.move(destination);
+        }
+        super.setFinished(true);
+
+
     }
 }

@@ -57,4 +57,8 @@ public class Room {
     public Room getPassageDestination() {
         return passageDestination;
     }
+
+    public boolean equals(Room room) {
+        return this.getName().equals(room.getName());
+    }
 }

@@ -5,19 +5,25 @@ import javax.swing.border.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+//CardsPanel Class
+//Author: William Warner
+//Created April 12th, 2023
+//No Collaboraters or outside sources
+
+//This is the side panel that displays the known cards
+
 public class CardsPanel extends JPanel{
     private ArrayList<Card> hand = new ArrayList<Card>();
     private ArrayList<Card> seenCards = new ArrayList<Card>();
+
+    private static CardsPanel theInstance = new CardsPanel();
+
+    public static CardsPanel getInstance() {
+        return theInstance;
+    }
+
     public CardsPanel() {
-        ArrayList<Card> tempHand = new ArrayList<Card>();
-        tempHand.add(new Card("Colonel Mustard", CardType.PERSON));
-        tempHand.add(new Card("Wrench", CardType.WEAPON));
-        tempHand.add(new Card("Rope", CardType.WEAPON));
-        seeCard(new Card("Name1", CardType.PERSON));
-        seeCard(new Card("Name2", CardType.PERSON));
-        seeCard(new Card("Katana", CardType.WEAPON));
-        seeCard(new Card("Kitchen", CardType.ROOM));
-        setHand(tempHand);
+        
         setLayout(new GridLayout(3,0));
         setBorder(new TitledBorder (new EtchedBorder(), "Known Cards"));
         JPanel peoplePanel = createPeoplePanel();
@@ -191,12 +197,15 @@ public class CardsPanel extends JPanel{
 
     public void setHand(ArrayList<Card> h) {
         hand = h;
+        refresh();
     }
     public void setSeenCards(ArrayList<Card> s) {
         seenCards = s;
+        refresh();
     }
     public void seeCard(Card c) {
         seenCards.add(c);
+        refresh();
     }
 
     public void refresh() {

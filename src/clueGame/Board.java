@@ -2,7 +2,11 @@ package clueGame;
 
 import java.util.*;
 import java.io.*;
-
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseListener;
+import java.util.concurrent.ThreadLocalRandom;
+import java.awt.event.*;
 
 //Board Class
 //Author: William Warner
@@ -17,7 +21,7 @@ import java.io.*;
 
 
 
-public class Board {
+public class Board extends JPanel implements MouseListener{
     private int cols;
     private int rows;
     private BoardCell[][] board;
@@ -29,6 +33,11 @@ public class Board {
     private ArrayList<Player> players;
     private ArrayList<Card> cards;
     private Solution solution;
+    private int turnNum = 0;
+    private boolean nextButtonClicked = false;
+    private int xCoordClicked;
+    private int yCoordClicked;
+    
 
     Set<Card> weaponCards = new HashSet<Card>();
     Set<Card> roomCards = new HashSet<Card>();
@@ -39,6 +48,7 @@ public class Board {
     //private constructor so can only be created once, directly above this comment
     private Board() {
         super();
+        addMouseListener(this);
         visited = new HashSet<BoardCell>();
         rooms = new ArrayList<Room>();
         targets = new HashSet<BoardCell>();
@@ -287,6 +297,7 @@ public class Board {
             players.get(i).clearHand();
         }
         Collections.shuffle(cards);
+        
         for (int p = 0; p < 18; p+= 3) {
             players.get(p / 3).addCard(cards.get(p));
             players.get(p / 3).addCard(cards.get(p + 1));
@@ -435,5 +446,156 @@ public class Board {
         return roomCards;
     }
 
+    public void paintComponent(Graphics g) {
+        
+        super.paintComponent(g);
+        int width = getWidth();
+        int height = getHeight();
+        int cellWidth = width / cols;
+        int cellHeight = height / rows;
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                board[r][c].draw(g, cellWidth, cellHeight);
+            }
+        }
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                board[r][c].drawDoor(g, cellWidth, cellHeight);
+            }
+        }
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                board[r][c].drawRoomName(g, cellWidth, cellHeight);
+            }
+        }
+        for (Player p : players) {
+            p.draw(g, cellWidth, cellHeight);
+        }
+       
+
+        
+    }
+
+
+    //handles when mouse clicks on the game board
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        //System.err.println("clicked");
+        ArrayList<BoardCell> validTargetCells = new ArrayList<BoardCell>();
+        Player currentPlayer = players.get(turnNum);
+
+        if (currentPlayer instanceof HumanPlayer) {
+
+            //calculates validTargetCells
+            if (!((HumanPlayer)currentPlayer).isFinished()) {
+                //System.err.println("generated valid target cells");
+                for (BoardCell target : targets) {
+                    if (target.isRoomCenter()) {
+                        ArrayList<BoardCell> otherRoomCells = getRoomCells(target);
+                        for (BoardCell roomCell : otherRoomCells) {
+                            validTargetCells.add(roomCell);
+                        }
+                    }
+                    else {
+                        validTargetCells.add(target);
+                    }
+                }
+            }
+            //end generating validTargetCells
+
+            if (validTargetCells.isEmpty()) {
+                //handle case with no possible moves
+            }
+
+            int width = getWidth();
+            int height = getHeight();
+            int cellWidth = width / cols;
+            int cellHeight = height / rows;
+            BoardCell clickedCell = null;
+            //determines clicked cell
+            for (BoardCell validTargetCell : validTargetCells) {
+                if (validTargetCell.containsClick(e.getX(), e.getY(), cellWidth, cellHeight)) {
+                    if (validTargetCell.isRoom()) {
+                        clickedCell = validTargetCell.getRoom().getCenterCell();
+                    }
+                    else {
+                        clickedCell = validTargetCell;
+                    }
+                    break;
+                }
+            }
+            if (clickedCell == null) {
+                //TODO; handle no moves available
+                JOptionPane.showMessageDialog(null, "Your turn is skipped", "You have no moves!", JOptionPane.ERROR_MESSAGE);
+                currentPlayer.setFinished(true);
+            }
+            else {
+                currentPlayer.move(clickedCell);
+                //TODO; if the player moves into a room, handle suggestion
+                currentPlayer.setFinished(true);
+                for (BoardCell bc : validTargetCells) {
+                    bc.unhighlight();
+                    repaint();
+                }
+                
+            }
+
+        }
+    }
+
+    //empty overriden methods for MouseListener
+    @Override
+    public void mouseEntered(MouseEvent e) {}
+    @Override
+    public void mouseExited(MouseEvent e) {}
+    @Override
+    public void mousePressed(MouseEvent e) {}
+    @Override
+    public void mouseReleased(MouseEvent e) {}
+
+    //given a room center cell, returns an arraylist of all cells in the room
+    public ArrayList<BoardCell> getRoomCells(BoardCell roomCenter) {
+
+        ArrayList<BoardCell> roomCells = new ArrayList<BoardCell>();
+        Room room = roomCenter.getRoom();
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (board[r][c].getRoom().equals(room)) {
+                    roomCells.add(board[r][c]);
+                }
+            }
+        }
+        return roomCells;
+    }
+
+    //handles logic when nextButton is pressed
+    public void nextButtonPressed() {
+        if (players.get(turnNum).isFinished()) {
+            nextPlayerTurn();
+            players.get(turnNum).handleTurn();
+        }
+        else {
+            //error, turn is not over
+            JOptionPane.showMessageDialog(null, "Please finish your turn", "Your turn is not over!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    //incriments turnNum correctly
+    public void nextPlayerTurn() {
+        if (turnNum == 5) {
+            turnNum = 0;
+        }
+        else {
+            turnNum++;
+        }
+    }
+
+    //starts first players turn
+    public void startGame() {
+        turnNum = 0;
+        players.get(turnNum).handleTurn();
+    }
 
 }
