@@ -34,9 +34,6 @@ public class Board extends JPanel implements MouseListener{
     private ArrayList<Card> cards;
     private Solution solution;
     private int turnNum = 0;
-    private boolean nextButtonClicked = false;
-    private int xCoordClicked;
-    private int yCoordClicked;
     
 
     Set<Card> weaponCards = new HashSet<Card>();
