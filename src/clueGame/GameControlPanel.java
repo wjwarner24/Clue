@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.lang.reflect.Field;
 import java.lang.Class;
 import java.awt.event.*;
-import java.lang.Object;
 
 //ClueGame Class
 //Author: William Warner
@@ -18,7 +17,6 @@ import java.lang.Object;
 
 public class GameControlPanel extends JPanel {
     private Player playerTurn = new ComputerPlayer("Colonel Mustard", "yellow", 0, 0, false);
-    private int turnNumber;
     private String guess = "I have no guess!";
     private String guessResult = "So you have nothing?";
     private int diceRoll = 0;
@@ -51,18 +49,6 @@ public class GameControlPanel extends JPanel {
         leftPanel.setLayout(new GridLayout(2,0));
         JLabel whoseTurn = new JLabel("Whose Turn?");
         leftPanel.add(whoseTurn);
-        //JTextField player = new JTextField(playerTurn.getName());
-
-        // Color color;
-        // try {
-        // Field field = Class.forName("java.awt.Color").getField(playerTurn.getColor());
-        // color = (Color)field.get(null);
-        // }
-        // catch (Exception e) {
-        //     color = null;
-        // }
-        // player.setBackground(color);
-        // player.setEditable(false);
         leftPanel.add(player);
         panel.add(leftPanel);
 
@@ -70,7 +56,6 @@ public class GameControlPanel extends JPanel {
         
         JLabel roll = new JLabel("Roll");
         rightPanel.add(roll);
-        //JTextField rollNum = new JTextField("" + diceRoll);
         rollNum.setEditable(false);
         rightPanel.add(rollNum);
 
@@ -82,11 +67,6 @@ public class GameControlPanel extends JPanel {
         panel.add(makeAccusationButton);
         panel.add(nextButton);
 
-
-
-
-
-
         return panel;
     }
 
@@ -96,8 +76,6 @@ public class GameControlPanel extends JPanel {
 
         JPanel leftPanel = new JPanel();
         JPanel rightPanel = new JPanel();
-
-
 
         leftPanel.setBorder(new TitledBorder (new EtchedBorder(), "Guess"));
         rightPanel.setBorder(new TitledBorder (new EtchedBorder(), "Guess Result"));
@@ -113,8 +91,6 @@ public class GameControlPanel extends JPanel {
         leftPanel.setLayout(new GridLayout(1,0));
         rightPanel.setLayout(new GridLayout(1,0));
 
-
-
         panel.add(leftPanel);
         panel.add(rightPanel);
 
@@ -124,7 +100,6 @@ public class GameControlPanel extends JPanel {
 	
 	public void setTurn(Player person) {
         playerTurn = person;
-        //turnNumber = num;
         player.setText(playerTurn.getName());
         Color color;
         try {
@@ -152,11 +127,7 @@ public class GameControlPanel extends JPanel {
         rollNum.setText("" + diceRoll);
     }
 	
-	/**
-	 * Main to test the panel
-	 * 
-	 * @param args
-	 */
+
 	public static void main(String[] args) {
 		GameControlPanel panel = new GameControlPanel();  // create the panel
 		JFrame frame = new JFrame();  // create the frame 
@@ -164,11 +135,6 @@ public class GameControlPanel extends JPanel {
 		frame.setSize(750, 180);  // size the frame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // allow it to close
 		frame.setVisible(true); // make it visible
-		
-		// test filling in the data
-		// panel.setTurn(new ComputerPlayer( "Col. Mustard", "Orange", 0, 0, false), 5);
-		// panel.setGuess( "I have no guess!");
-		// panel.setGuessResult( "So you have nothing?");
 	}
 
     class NextButtonListener implements ActionListener {
@@ -180,7 +146,3 @@ public class GameControlPanel extends JPanel {
         }
     }
 }
-
-// private class NextButtonListener implements ActionListener {
-
-//  }

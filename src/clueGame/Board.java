@@ -522,7 +522,7 @@ public class Board extends JPanel implements MouseListener{
                 }
             }
             if (clickedCell == null) {
-                //TODO; handle no moves available
+                //no moves available, skips move
                 JOptionPane.showMessageDialog(null, "Your turn is skipped", "You have no moves!", JOptionPane.ERROR_MESSAGE);
                 currentPlayer.setFinished(true);
             }
