@@ -506,7 +506,7 @@ public class Board extends JPanel implements MouseListener{
             //end generating validTargetCells
 
             if (validTargetCells.isEmpty()) {
-                //TODO; handle case with no possible moves
+                //handle case with no possible moves
                 JOptionPane.showMessageDialog(null, "Your turn is skipped", "You have no moves!", JOptionPane.ERROR_MESSAGE);
                 currentPlayer.setFinished(true);
             }
@@ -537,9 +537,8 @@ public class Board extends JPanel implements MouseListener{
                 currentPlayer.setFinished(true);
                 for (BoardCell bc : validTargetCells) {
                     bc.unhighlight();
-                    repaint();
                 }
-                
+                repaint();
             }
 
         }
