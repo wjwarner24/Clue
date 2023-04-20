@@ -3,8 +3,6 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Field;
-import java.lang.Class;
 import java.awt.event.*;
 
 //ClueGame Class
@@ -101,15 +99,7 @@ public class GameControlPanel extends JPanel {
 	public void setTurn(Player person) {
         playerTurn = person;
         player.setText(playerTurn.getName());
-        Color color;
-        try {
-            Field field = Class.forName("java.awt.Color").getField(playerTurn.getColor());
-            color = (Color)field.get(null);
-        }
-        catch (Exception e) {
-            color = null;
-        }
-        player.setBackground(color);
+        player.setBackground(playerTurn.getTrueColor());
         player.setEditable(false);
 
     }

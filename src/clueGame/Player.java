@@ -16,7 +16,7 @@ import java.lang.reflect.Field;
 
 public abstract class Player {
     private String name;
-    private String color; //TODO make this field type Color
+    private String color; 
     private int row;
     private int col;
     private ArrayList<Card> cards;
@@ -24,6 +24,7 @@ public abstract class Player {
     private boolean isHuman;
     private int number;
     private boolean finished = false;
+    private Color trueColor;
 
     public Player() {
 
@@ -37,6 +38,19 @@ public abstract class Player {
         this.isHuman = isHuman;
         cards = new ArrayList<Card>();
         seenCards = new HashSet<Card>();
+        Color tempColor;
+        try {
+        Field field = Class.forName("java.awt.Color").getField(this.getColor());
+        tempColor = (Color)field.get(null);
+        }
+        catch (Exception e) {
+            tempColor = null;
+        }
+        trueColor = tempColor;
+    }
+
+    public Color getTrueColor() {
+        return trueColor;
     }
 
     public void setNumber(int num) {
@@ -129,16 +143,7 @@ public abstract class Player {
         int leftBorder = col * cellWidth;
         int topBorder = row * cellHeight;
 
-        Color color;
-        try {
-        Field field = Class.forName("java.awt.Color").getField(this.getColor());
-        color = (Color)field.get(null);
-        }
-        catch (Exception e) {
-            color = null;
-        }
-        //System.out.println(color.toString());
-        g.setColor(color);
+        g.setColor(trueColor);
         g.drawOval(leftBorder, topBorder, cellWidth, cellHeight);
         g.fillOval(leftBorder, topBorder, cellWidth, cellHeight);
     }
@@ -152,6 +157,6 @@ public abstract class Player {
 
     //TODO; add overlapping code here from player classes
     public void handleTurn() {
-
+        
     }
 }

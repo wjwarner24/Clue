@@ -4,7 +4,6 @@ import java.util.*;
 import java.io.*;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseListener;
 import java.awt.event.*;
 
 //Board Class
@@ -35,9 +34,9 @@ public class Board extends JPanel implements MouseListener{
     private int turnNum = 0;
     
 
-    Set<Card> weaponCards = new HashSet<Card>();
-    Set<Card> roomCards = new HashSet<Card>();
-    Set<Card> personCards = new HashSet<Card>();
+    private Set<Card> weaponCards = new HashSet<Card>();
+    private Set<Card> roomCards = new HashSet<Card>();
+    private Set<Card> personCards = new HashSet<Card>();
 
     private static Board theInstance = new Board();
 
@@ -95,7 +94,7 @@ public class Board extends JPanel implements MouseListener{
     public Set<BoardCell> getTargets() {
         return targets;
     }
-
+    //sets the config files
     public void setConfigFiles(String layoutF, String setupF) {
         this.layoutFile = new File(layoutF);
         this.setupFile = new File(setupF);
@@ -365,15 +364,15 @@ public class Board extends JPanel implements MouseListener{
         }
 
     }
-
+    //returns the number of rows
     public int getNumRows() {
         return this.rows;
     }
-
+    //returns the number of cols
     public int getNumColumns() {
         return this.cols;
     }
-
+    //returns a room given its character symbol
     public Room getRoom(char c) {
         for (Room r : rooms) {
             if (r.getSymbol() == c) {
@@ -382,28 +381,28 @@ public class Board extends JPanel implements MouseListener{
         }
         return new Room("error", 'e');
     }
-
+    //returns a room given a cell
     public Room getRoom(BoardCell bc) {
         return bc.getRoom();
     }
-
+    //returns the adjacency list of a given cell
     public Set<BoardCell> getAdjList(int r, int c) {
         return board[r][c].getAdjList();
     }
-
+    //clears targets
     public void clearTargets() {
         targets.clear();
         visited.clear();
     }
-
+    //returns the Players
     public ArrayList<Player> getPlayers() {
         return players;
     }
-
+    //returns all the cards
     public ArrayList<Card> getCards() {
         return cards;
     }
-
+    //returns the solution to the game
     public Solution getSolution() {
         return solution;
     }
@@ -422,8 +421,6 @@ public class Board extends JPanel implements MouseListener{
                 return players.get(adjustedPlayerNum).disproveSuggestion(suggestion);
             }
         }
-
-
         return null;
     }
 
@@ -431,13 +428,15 @@ public class Board extends JPanel implements MouseListener{
     public void setSolution(Solution sol) {
         this.solution = sol;
     }
-
+    //returns all the weapon cards
     public Set<Card> getWeaponCards() {
         return weaponCards;
     }
+    //returns all the person cards
     public Set<Card> getPersonCards() {
         return personCards;
     }
+    //returns all the room cards
     public Set<Card> getRoomCards() {
         return roomCards;
     }
@@ -501,7 +500,9 @@ public class Board extends JPanel implements MouseListener{
             //end generating validTargetCells
 
             if (validTargetCells.isEmpty()) {
-                //handle case with no possible moves
+                //TODO; handle case with no possible moves
+                JOptionPane.showMessageDialog(null, "Your turn is skipped", "You have no moves!", JOptionPane.ERROR_MESSAGE);
+                currentPlayer.setFinished(true);
             }
 
             int width = getWidth();
@@ -522,9 +523,7 @@ public class Board extends JPanel implements MouseListener{
                 }
             }
             if (clickedCell == null) {
-                //no moves available, skips move
-                JOptionPane.showMessageDialog(null, "Your turn is skipped", "You have no moves!", JOptionPane.ERROR_MESSAGE);
-                currentPlayer.setFinished(true);
+                //clicked cell is not a valid target
             }
             else {
                 currentPlayer.move(clickedCell);

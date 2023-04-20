@@ -128,7 +128,7 @@ public class BoardCell {
         adjList.clear();
     }
 
-    //parameters are Graphics, cellWidth, cellHeight, BoardCell
+    //draws the BoardCell
     public void draw(Graphics g, int cellWidth, int cellHeight) {
        
 
@@ -173,7 +173,7 @@ public class BoardCell {
         
 
     }
-
+    //draws the door
     public void drawDoor(Graphics g, int cellWidth, int cellHeight) {
 
         int leftBorder = col * cellWidth;
@@ -204,7 +204,7 @@ public class BoardCell {
             }
         }
     }
-
+    //draws the room name
     public void drawRoomName(Graphics g, int cellWidth, int cellHeight) {
         int leftBorder = col * cellWidth;
         int topBorder = row * cellHeight;
@@ -215,27 +215,19 @@ public class BoardCell {
         return;
     
     }
-
-    public void highlightCell(Graphics g, int cellWidth, int cellHeight) {
-        g.setColor(Color.blue);
-        int leftBorder = col * cellWidth;
-        int topBorder = row * cellHeight;
-        g.drawRect(leftBorder, topBorder, cellWidth, cellHeight);
-        g.fillRect(leftBorder, topBorder, cellWidth, cellHeight);
-
-    }
-
+   
     public void highlight() {
         isHighlighted = true;
     }
     public void unhighlight() {
         isHighlighted = false;
     }
-
+    //returns status of 
     public boolean highlighted() {
         return isHighlighted;
     }
-
+    //returns true if given x,y coords are within cell
+    //returns false if not
     public boolean containsClick(int x, int y, int cellWidth, int cellHeight) {
         int leftX = col * cellWidth;
         int rightX = leftX + cellWidth;
@@ -244,5 +236,4 @@ public class BoardCell {
         
         return (x >= leftX && x < rightX && y >= topY && y < bottomY);
     }
-
 }

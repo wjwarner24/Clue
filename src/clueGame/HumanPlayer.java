@@ -34,8 +34,6 @@ public class HumanPlayer extends Player {
             bc.highlight();
         }
         Board.getInstance().repaint();
-        //waits until player selects a cell to move to
-        //located in Board Class
 
     }
 }
