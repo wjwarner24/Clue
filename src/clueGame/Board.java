@@ -257,54 +257,11 @@ public class Board extends JPanel implements MouseListener{
             System.err.println("Bad Configuration for layout file");
         }
 
-        //set solution
-        Collections.shuffle(cards);
-        
-        int index = 0;
-        while (!(cards.get(index).getCardType() == CardType.PERSON)) {
-            index++;
-        }
-        cards.get(index).setSolution(true);
-        solution.setPersonCard(cards.get(index));
-        cards.remove(index);
+       //solution must be set before cards are dealt
+        setSolution();
+        dealCards();
 
-        index = 0;
-        while (!(cards.get(index).getCardType() == CardType.ROOM)) {
-            index++;
-        }
-        cards.get(index).setSolution(true);
-        solution.setRoomCard(cards.get(index));
-        cards.remove(index);
-
-        index = 0;
-        while (!(cards.get(index).getCardType() == CardType.WEAPON)) {
-            index++;
-        }
-        cards.get(index).setSolution(true);
-        solution.setWeaponCard(cards.get(index));
-        cards.remove(index);
-        
-        
-
-        //now we must deal the cards in the ArrayList to players
-
-        for (int i = 0; i < 3; i++) {
-            players.get(i).clearHand();
-        }
-        Collections.shuffle(cards);
-        
-        for (int p = 0; p < 18; p+= 3) {
-            players.get(p / 3).addCard(cards.get(p));
-            players.get(p / 3).addCard(cards.get(p + 1));
-            players.get(p / 3).addCard(cards.get(p + 2));
-        }
-
-        //add the previosly removed solution cards back to the deck to pass tests
-        //these cards will be in the final 3 indices
-        cards.add(solution.getPersonCard());
-        cards.add(solution.getRoomCard());
-        cards.add(solution.getWeaponCard());
-
+        //adds adjacencies
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
                 if (board[r][c].isWalkway()) {
@@ -364,6 +321,55 @@ public class Board extends JPanel implements MouseListener{
         }
 
     }
+
+    //deals the cards to the players, then adds the solution cards back to the deck
+    public void dealCards() {
+        for (int i = 0; i < 3; i++) {
+            players.get(i).clearHand();
+        }
+        Collections.shuffle(cards);
+        
+        for (int p = 0; p < 18; p+= 3) {
+            players.get(p / 3).addCard(cards.get(p));
+            players.get(p / 3).addCard(cards.get(p + 1));
+            players.get(p / 3).addCard(cards.get(p + 2));
+        }
+
+        //now we add the previosly removed solution cards back to the deck to pass tests
+        cards.add(solution.getPersonCard());
+        cards.add(solution.getRoomCard());
+        cards.add(solution.getWeaponCard());
+    }
+
+    //sets a random solution and removes the cards from the deck
+    public void setSolution() {
+        Collections.shuffle(cards);
+        
+        int index = 0;
+        while (!(cards.get(index).getCardType() == CardType.PERSON)) {
+            index++;
+        }
+        cards.get(index).setSolution(true);
+        solution.setPersonCard(cards.get(index));
+        cards.remove(index);
+
+        index = 0;
+        while (!(cards.get(index).getCardType() == CardType.ROOM)) {
+            index++;
+        }
+        cards.get(index).setSolution(true);
+        solution.setRoomCard(cards.get(index));
+        cards.remove(index);
+
+        index = 0;
+        while (!(cards.get(index).getCardType() == CardType.WEAPON)) {
+            index++;
+        }
+        cards.get(index).setSolution(true);
+        solution.setWeaponCard(cards.get(index));
+        cards.remove(index);
+    }
+
     //returns the number of rows
     public int getNumRows() {
         return this.rows;
