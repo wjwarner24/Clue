@@ -37,93 +37,94 @@ public class BoardCell {
         this.secretPassage = ' ';
 
     }
-
+    //adds cell to the adjacnency list of this cell
     public void addAdjacency(BoardCell cell) {
         adjList.add(cell);
     }
-
+    //returns the adj list for this cell
     public Set<BoardCell> getAdjList() {
         return adjList;
     }
-
+    //sets the room that this cell is in
     public void setRoom(Room r) {
         this.room = r;
     }
-
+    //returns whether this cell is in a room
     public boolean isRoom() {
         if (this.name.charAt(0) == 'X' || this.name.charAt(0) == 'W') {
             return false;
         }
         return true;
     }
-
+    //returns the room that this cell is in
     public Room getRoom() {
         return room;
     }
-
+    //sets whether this cell is occupied
     public void setOccupied(boolean b) {
         occupied = b;
     }
-
+    //returns whether this cell is occupied
     public boolean isOccupied() {
         return occupied;
     }
-
+    //returns whether this cell is a doorway
     public boolean isDoorway() {
         if (direction == DoorDirection.NONE) {
             return false;
         }
         return true;
     }
-
+    //returns whether this cell is a walkway
     public boolean isWalkway() {
         if (name.charAt(0) == 'W') {
             return true;
         }
         return false;
     }
-
+    //gets door direction
     public DoorDirection getDoorDirection() {
         return direction;
     }
-
+    //returns this cell's name
     public String getName() {
         return name;
     }
-
+    //returns whether this cell is a room center
     public boolean isRoomCenter() {
         if (name.contains("*")) {
             return true;
         }
         return false;
     }
-
+    //returns whether this cell is a label cell
     public boolean isLabel() {
         if (name.contains("#")) {
             return true;
         }
         return false;
     }
-
+    //gets secret passage
     public char getSecretPassage() {
         return secretPassage;
     }
-
+    //sets door direction
     public void setDoorDirection(DoorDirection d) {
         this.direction = d;
     }
-
+    //gets row
     public int getRow() {
         return row;
     }
-
+    //gets col
     public int getCol() {
         return col;
     }
-
+    //sets secret passage
     public void setSecretPassage(char c) {
         this.secretPassage = c;
     }
+    //clears adj list
     public void clearAdjList() {
         adjList.clear();
     }
