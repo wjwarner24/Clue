@@ -17,6 +17,8 @@ import java.util.Random;
 public class ComputerPlayer extends Player {
 
     Set<Room> seenRooms = new HashSet<Room>();
+    boolean makeAccusation = false;
+    ArrayList<Card> pendingAccusation;
 
     public ComputerPlayer(String name, String color, int row, int col, boolean isHuman) {
         super(name, color, row, col, isHuman);
@@ -92,6 +94,10 @@ public class ComputerPlayer extends Player {
        
         if (possibleWeapons.size() == 0) {
             //choose random from weaponcards
+            Random rand = new Random();
+            ArrayList<Card> allWeapons = new ArrayList<Card>(Board.getInstance().getWeaponCards());
+            int randInt = rand.nextInt(allWeapons.size());
+            weaponSuggestion = allWeapons.get(randInt);
             
         }
         else {
@@ -104,6 +110,10 @@ public class ComputerPlayer extends Player {
         
         if (possiblePeople.size() == 0) {
             //choose random from personCards
+            Random rand = new Random();
+            ArrayList<Card> allPersons = new ArrayList<Card>(Board.getInstance().getPersonCards());
+            int randInt = rand.nextInt(allPersons.size());
+            personSuggestion = allPersons.get(randInt);
             
         }
         else {
@@ -131,6 +141,21 @@ public class ComputerPlayer extends Player {
     @Override
     public void handleTurn() {
         super.setFinished(false);
+
+        if (makeAccusation) {
+            //make an accusation
+            Solution solution = new Solution(pendingAccusation);
+            boolean correctAccusation = Board.getInstance().checkAccusation(solution);
+            if (correctAccusation) {
+                //computer accusation is correct, display popup and end game
+                Board.getInstance().computerWinGame(this, solution);
+            }
+            else {
+                //computer accusation is wrong, this should never occur
+                System.out.println("ERROR: " + this.getName() + " accusation was wrong");
+            }
+        }
+
         Random rand = new Random();
         int diceRoll = rand.nextInt(6) + 1;
         GameControlPanel.getInstance().setTurn(this);
@@ -139,6 +164,62 @@ public class ComputerPlayer extends Player {
         if (destination != null) {
             super.move(destination);
         }
+        if (destination.isRoomCenter()) {
+            //handle computer suggestion
+            ArrayList<Card> tempSuggestion = this.createSuggestion();
+
+            //move suggested player into room
+            Card personCard = null;
+            for (Card c : tempSuggestion) {
+                if (c.getCardType() == CardType.PERSON) {
+                    personCard = c;
+                    break;
+                }
+            }
+            for (Player p : Board.getInstance().getPlayers()) {
+                if (p.getName().equals(personCard.getName())) {
+                    //BoardCell dest = Board.players.get(turnNum).getRoom().getCenterCell();
+                    p.move(destination);
+                    break;
+                }
+            }
+            //end moving suggested player into room
+
+            String guess = tempSuggestion.get(0).getName() + ", " + tempSuggestion.get(1).getName() + ", " + tempSuggestion.get(2).getName();
+            GameControlPanel.getInstance().setGuess(guess);
+            int turnNum = Board.getInstance().getTurnNum();
+            Card disprovedCard = Board.getInstance().handleSuggestion(tempSuggestion, turnNum);
+            if (disprovedCard == null) {
+                //suggestion could not be disproved
+                GameControlPanel.getInstance().setGuessResult("Could not be disproved!");
+                this.makeAccusation = true; // makes accusation on next turn
+                pendingAccusation = tempSuggestion;
+            }
+            else {
+                //suggestion was disproved, show in gameControlPanel
+                //if human player, show disproved card and who disproved it
+                //if computer, display that it was disproved or not and by who. do not show card
+                Player disprovingPlayer = null;
+                for (Player p : Board.getInstance().getPlayers()) {
+                    if (p.getCards().contains(disprovedCard)) {
+                        disprovingPlayer = p;
+                        break;
+                    }
+                }
+                GameControlPanel.getInstance().setGuessResult("Guess was disproved by " + disprovingPlayer.getName());
+                Board.getInstance().getPlayers().get(turnNum).addSeenCard(disprovedCard); //make player see disproved card
+            }
+            GameControlPanel.getInstance().refresh(); //TODO: make this not bug out the game control panel
+
+        }
         super.setFinished(true);
+    }
+
+    public boolean getAccusationStatus() {
+        return makeAccusation;
+    }
+
+    public void setAccusationStatus(boolean b) {
+        makeAccusation = b;
     }
 }

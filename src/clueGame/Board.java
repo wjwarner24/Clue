@@ -261,7 +261,11 @@ public class Board extends JPanel implements MouseListener{
         setSolution();
         dealCards();
 
-        //adds adjacencies
+        for (int i = 0; i < players.size(); i++) {
+            players.get(i).setNumber(i);
+        }
+
+        //adds adjacencies, might be good practice to make this a seperate method later
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
                 if (board[r][c].isWalkway()) {
@@ -481,8 +485,7 @@ public class Board extends JPanel implements MouseListener{
 
     //handles when mouse clicks on the game board
     @Override
-    public void mouseClicked(MouseEvent e) {
-        //System.err.println("clicked");
+    public void mousePressed(MouseEvent e) {
         ArrayList<BoardCell> validTargetCells = new ArrayList<BoardCell>();
         Player currentPlayer = players.get(turnNum);
 
@@ -490,7 +493,6 @@ public class Board extends JPanel implements MouseListener{
 
             //calculates validTargetCells
             if (!((HumanPlayer)currentPlayer).isFinished()) {
-                //System.err.println("generated valid target cells");
                 for (BoardCell target : targets) {
                     if (target.isRoomCenter()) {
                         ArrayList<BoardCell> otherRoomCells = getRoomCells(target);
@@ -502,6 +504,9 @@ public class Board extends JPanel implements MouseListener{
                         validTargetCells.add(target);
                     }
                 }
+            }
+            else {
+                return; //ignores click when turn is already finished
             }
             //end generating validTargetCells
 
@@ -530,16 +535,69 @@ public class Board extends JPanel implements MouseListener{
             }
             if (clickedCell == null) {
                 //clicked cell is not a valid target
+                return;
             }
             else {
                 currentPlayer.move(clickedCell);
-                //TODO; if the player moves into a room, handle suggestion
+                //if the player moves into a room, handle suggestion
+                if (clickedCell.isRoomCenter()) {
+                    //show popup window and get suggestion from user input
+                    ArrayList<Card> tempSuggestion = getSuggestion();
+
+
+                    //move suggestedPlayer into room
+                    Card personCard = null;
+                    for (Card c : tempSuggestion) {
+                        if (c.getCardType() == CardType.PERSON) {
+                            personCard = c;
+                            break;
+                        }
+                    }
+                    for (Player p : getPlayers()) {
+                        if (p.getName().equals(personCard.getName())) {
+                            BoardCell dest = players.get(turnNum).getRoom().getCenterCell();
+                            p.move(dest);
+                            break;
+                        }
+                    }
+                    //end moving suggested player into room
+
+                    //display guess in gameControlPanel
+                    String guess = tempSuggestion.get(0).getName() + ", " + tempSuggestion.get(1).getName() + ", " + tempSuggestion.get(2).getName();
+                    GameControlPanel.getInstance().setGuess(guess);
+
+                    Card disprovedCard = this.handleSuggestion(tempSuggestion, turnNum);
+                    if (disprovedCard == null) {
+                        //suggestion could not be disproved
+                        GameControlPanel.getInstance().setGuessResult("Could not be disproved!");
+                    }
+                    else {
+                        //suggestion was disproved, show in gameControlPanel
+                        //if human player, show disproved card and who disproved it
+                        Player disprovingPlayer = null;
+                        for (Player p : players) {
+                            if (p.getCards().contains(disprovedCard)) {
+                                disprovingPlayer = p;
+                                break;
+                            }
+                        }
+                        GameControlPanel.getInstance().setGuessResult("\"" + disprovedCard.getName() + "\"" + " card was shown by " + disprovingPlayer.getName());
+                        CardsPanel.getInstance().seeCard(disprovedCard); //make player see disproved card
+                    }
+                    GameControlPanel.getInstance().refresh(); //TODO: make this not bug out the game control panel
+                    //GameControlPanel.getInstance().repaint();
+
+                }
                 currentPlayer.setFinished(true);
+                //unihighlights the target cells
                 for (BoardCell bc : validTargetCells) {
                     bc.unhighlight();
                 }
                 repaint();
             }
+
+        }
+        else {
 
         }
     }
@@ -550,7 +608,7 @@ public class Board extends JPanel implements MouseListener{
     @Override
     public void mouseExited(MouseEvent e) {}
     @Override
-    public void mousePressed(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {}
     @Override
     public void mouseReleased(MouseEvent e) {}
 
@@ -570,7 +628,7 @@ public class Board extends JPanel implements MouseListener{
         return roomCells;
     }
 
-    //handles logic when nextButton is pressed
+    //handles logic when nextButton is pressed, called from NextButtonListener in GameControlPanel
     public void nextButtonPressed() {
         if (players.get(turnNum).isFinished()) {
             nextPlayerTurn();
@@ -580,6 +638,7 @@ public class Board extends JPanel implements MouseListener{
             //error, turn is not over
             JOptionPane.showMessageDialog(null, "Please finish your turn", "Your turn is not over!", JOptionPane.ERROR_MESSAGE);
         }
+        GameControlPanel.getInstance().repaint();
     }
 
     //incriments turnNum correctly
@@ -596,6 +655,79 @@ public class Board extends JPanel implements MouseListener{
     public void startGame() {
         turnNum = 0;
         players.get(turnNum).handleTurn();
+    }
+
+    public ArrayList<Card> getSuggestion() {
+        ArrayList<Card> suggestionTemp = new ArrayList<Card>();
+
+        //make a popup where you can select the suggestion
+        SuggestionPopup suggestionPopup = new SuggestionPopup(players.get(turnNum).getRoom());
+        String personString = suggestionPopup.getPersonCard();
+        String weaponString = suggestionPopup.getWeaponCard();
+        
+        for (Card c : this.getPersonCards()) {
+            if (c.getName().equals(personString)) {
+                suggestionTemp.add(c);
+                break;
+            }
+        }
+        for (Card c : this.getWeaponCards()) {
+            if (c.getName().equals(weaponString)) {
+                suggestionTemp.add(c);
+                break;
+            }
+        }
+        String roomName = players.get(turnNum).getRoom().getName();
+        for (Card c : this.getRoomCards()) {
+            if (c.getName().equals(roomName)) {
+                suggestionTemp.add(c);
+                break;
+            }
+        }
+        return suggestionTemp;
+    }
+
+    public int getTurnNum() {
+        return turnNum;
+    }
+
+    //accusation button was pressed
+    public void accusationButtonPressed() {
+        if (players.get(turnNum) instanceof HumanPlayer && !players.get(turnNum).isFinished()) {
+
+        }
+        else {
+            return;
+        }
+        AccusationPopup acc = new AccusationPopup();
+        Solution sol = acc.getSolution();
+        boolean correctAcc = this.checkAccusation(sol);
+
+        if (correctAcc) {
+            //player wins game
+            humanWinGame(players.get(0), sol);
+        }
+        else {
+            //player loses game
+            humanLoseGame(players.get(0), sol);
+        }
+    }
+
+    public void humanWinGame(Player player, Solution sol) {
+        String message = "You guessed the correct solution of: " + sol.getRoomCard().getName() + ", " + sol.getPersonCard().getName() + ", " + sol.getWeaponCard().getName();
+        JOptionPane.showMessageDialog(null, message, "You won the game!", JOptionPane.INFORMATION_MESSAGE);
+        System.exit(0);
+    }
+    public void humanLoseGame(Player player, Solution sol) {
+        String message = "You guessed the incorrect solution of: " + sol.getRoomCard().getName() + ", " + sol.getPersonCard().getName() + ", " + sol.getWeaponCard().getName() + "\nThe correct solution was: " + solution.getRoomCard().getName() + ", " + solution.getPersonCard().getName() + ", " + solution.getWeaponCard().getName();
+        JOptionPane.showMessageDialog(null, message, "You lost the game!", JOptionPane.INFORMATION_MESSAGE);
+        System.exit(0);
+    }
+
+    public void computerWinGame(Player player, Solution sol) {
+        String message = player.getName() + " guessed the correct solution of: " + sol.getRoomCard().getName() + ", " + sol.getPersonCard().getName() + ", " + sol.getWeaponCard().getName();
+        JOptionPane.showMessageDialog(null, message, "Computer won the game!", JOptionPane.INFORMATION_MESSAGE);
+        System.exit(0);
     }
 
 }

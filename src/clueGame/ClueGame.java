@@ -33,9 +33,10 @@ public class ClueGame extends JFrame {
         game.setSize(750,930);
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // allow it to close
 		game.setVisible(true);
-        JOptionPane.showMessageDialog(null, "You are Miss Scarlett.\nCan you find the solution\nbefore the computer players?", "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "You are Clifford.\nCan you find the solution\nbefore the computer players?", "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
 
         Board.getInstance().startGame();
+
 
     }
 }

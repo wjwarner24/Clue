@@ -12,12 +12,12 @@ Room, Hall, H
 Space, Unused, X
 Space, Walkway, W
 //first player will be human, rest will be computer
-Player, Name1, red, 0, 7, true
-Player, Name2, blue, 2, 17, false
-Player, Name3, green, 7, 23, false
-Player, Name4, orange, 18, 23, false
-Player, Name5, gray, 25, 18, false
-Player, Name6, white, 25, 10, false
+Player, Clifford, red, 0, 7, true
+Player, Dory, blue, 2, 17, false
+Player, Yoda, green, 7, 23, false
+Player, Velma, orange, 18, 23, false
+Player, Pink Panther, pink, 25, 18, false
+Player, Mr. Clean, white, 25, 10, false
 //weapons
 Weapon, Glass Bottle
 Weapon, Sharp Fingernail

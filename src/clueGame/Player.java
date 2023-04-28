@@ -143,9 +143,16 @@ public abstract class Player {
         int leftBorder = col * cellWidth;
         int topBorder = row * cellHeight;
 
+        //makes the player icons not overlap if they are both in a room
+        if (Board.getInstance().getCell(row, col).isRoomCenter()) {
+            leftBorder += (number * 5);
+        }
+
         g.setColor(trueColor);
         g.drawOval(leftBorder, topBorder, cellWidth, cellHeight);
         g.fillOval(leftBorder, topBorder, cellWidth, cellHeight);
+        g.setColor(Color.black);
+        g.drawOval(leftBorder, topBorder, cellWidth, cellHeight);
     }
 
     public void setFinished(boolean b) {

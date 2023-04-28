@@ -1,5 +1,5 @@
 package clueGame;
-
+import java.util.ArrayList;
 public class Solution {
     private Card weaponCard;
     private Card personCard;
@@ -7,6 +7,19 @@ public class Solution {
 
     public Solution() {
 
+    }
+    public Solution(ArrayList<Card> list) {
+        for (Card c : list) {
+            if (c.getCardType() == CardType.WEAPON) {
+                weaponCard = c;
+            }
+            if (c.getCardType() == CardType.PERSON) {
+                personCard = c;
+            }
+            if (c.getCardType() == CardType.ROOM) {
+                roomCard = c;
+            }
+        }
     }
 
     public void setWeaponCard(Card c) {

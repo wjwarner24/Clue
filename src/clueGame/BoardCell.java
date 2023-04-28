@@ -108,6 +108,7 @@ public class BoardCell {
     public char getSecretPassage() {
         return secretPassage;
     }
+
     //sets door direction
     public void setDoorDirection(DoorDirection d) {
         this.direction = d;
@@ -156,6 +157,9 @@ public class BoardCell {
                 g.setColor(Color.cyan);
                 g.drawRect(leftBorder, topBorder, cellWidth, cellHeight);
                 g.fillRect(leftBorder, topBorder, cellWidth, cellHeight);
+                return;
+            }
+            else if (secretPassage != ' ') {
                 return;
             }
             g.setColor(Color.gray);

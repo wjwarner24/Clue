@@ -128,11 +128,11 @@ public class ComputerAITest {
         BoardCell target = testPlayer.selectTarget(5);
         testPlayer.move(target);
 
-        testPlayer.addSeenCard(new Card("Name1", CardType.PERSON));
-        testPlayer.addSeenCard(new Card("Name2", CardType.PERSON));
-        testPlayer.addSeenCard(new Card("Name3", CardType.PERSON));
-        testPlayer.addSeenCard(new Card("Name4", CardType.PERSON));
-        testPlayer.addSeenCard(new Card("Name5", CardType.PERSON));
+        testPlayer.addSeenCard(new Card("Clifford", CardType.PERSON));
+        testPlayer.addSeenCard(new Card("Dory", CardType.PERSON));
+        testPlayer.addSeenCard(new Card("Yoda", CardType.PERSON));
+        testPlayer.addSeenCard(new Card("Velma", CardType.PERSON));
+        testPlayer.addSeenCard(new Card("Pink Panther", CardType.PERSON));
 
         ArrayList<Card> suggestion = testPlayer.createSuggestion();
 
@@ -143,7 +143,7 @@ public class ComputerAITest {
                 break;
             }
         }
-        assertTrue(personCard.equals(new Card("Name6", CardType.PERSON)));
+        assertTrue(personCard.equals(new Card("Mr. Clean", CardType.PERSON)));
     }
 
     @Test
@@ -179,10 +179,10 @@ public class ComputerAITest {
         BoardCell target = testPlayer.selectTarget(5);
         testPlayer.move(target);
 
-        testPlayer.addSeenCard(new Card("Name1", CardType.PERSON));
-        testPlayer.addSeenCard(new Card("Name2", CardType.PERSON));
-        testPlayer.addSeenCard(new Card("Name3", CardType.PERSON));
-        testPlayer.addSeenCard(new Card("Name4", CardType.PERSON));
+        testPlayer.addSeenCard(new Card("Clifford", CardType.PERSON));
+        testPlayer.addSeenCard(new Card("Dory", CardType.PERSON));
+        testPlayer.addSeenCard(new Card("Yoda", CardType.PERSON));
+        testPlayer.addSeenCard(new Card("Velma", CardType.PERSON));
 
         ArrayList<Card> suggestion = testPlayer.createSuggestion();
 
@@ -193,7 +193,7 @@ public class ComputerAITest {
                 break;
             }
         }
-        assertTrue(personCard.equals(new Card("Name6", CardType.PERSON)) || personCard.equals(new Card("Name5", CardType.PERSON)));
+        assertTrue(personCard.equals(new Card("Mr. Clean", CardType.PERSON)) || personCard.equals(new Card("Pink Panther", CardType.PERSON)));
     }
 
 }

@@ -14,24 +14,28 @@ import java.awt.event.*;
 //and other game functions
 
 public class GameControlPanel extends JPanel {
-    private Player playerTurn = new ComputerPlayer("Colonel Mustard", "yellow", 0, 0, false);
-    private String guess = "I have no guess!";
-    private String guessResult = "So you have nothing?";
+    private Player playerTurn = new ComputerPlayer("testPlayer", "yellow",3,3,false);
+    private String guess = "";
+    private String guessResult = "";
     private int diceRoll = 0;
-    JButton makeAccusationButton = new JButton("Make Accusation");
-    JButton nextButton = new JButton("Next");
-    JTextField player = new JTextField(playerTurn.getName());
-    JTextField rollNum = new JTextField("" + diceRoll);
+    // private JButton accusationButton = new JButton("Make Accusation");
+    // private JButton nextButton = new JButton("Next");
+    private JTextField player = new JTextField(playerTurn.getName());
+    private JTextField rollNum = new JTextField("" + diceRoll);
 
 	private static GameControlPanel theInstance = new GameControlPanel();
 
-	public GameControlPanel()  {
+	private GameControlPanel()  {
+
+        
+        // nextButton.addActionListener(new NextButtonListener());
+        // accusationButton.addActionListener(new AccusationButtonListener());
+
 		setLayout(new GridLayout(2,0));
         JPanel upperPanel = createUpperPanel();
         JPanel lowerPanel = createLowerPanel();
         add(upperPanel);
         add(lowerPanel);
-        nextButton.addActionListener(new NextButtonListener());
 	}
 
     public static GameControlPanel getInstance() {
@@ -39,6 +43,8 @@ public class GameControlPanel extends JPanel {
     }
 
     private JPanel createUpperPanel() {
+        
+
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(1,4));
 
@@ -59,16 +65,19 @@ public class GameControlPanel extends JPanel {
 
         panel.add(rightPanel);
 
-        JButton makeAccusationButton = new JButton("Make Accusation");
+        JButton accusationButton = new JButton("Make Accusation");
         JButton nextButton = new JButton("Next");
         nextButton.addActionListener(new NextButtonListener());
-        panel.add(makeAccusationButton);
+        accusationButton.addActionListener(new AccusationButtonListener());
+        
+        panel.add(accusationButton);
         panel.add(nextButton);
 
         return panel;
     }
 
     private JPanel createLowerPanel() {
+
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(0,2));
 
@@ -116,6 +125,16 @@ public class GameControlPanel extends JPanel {
         diceRoll = roll;
         rollNum.setText("" + diceRoll);
     }
+
+    public void refresh() {
+        removeAll();
+        setLayout(new GridLayout(2,0));
+        add(createUpperPanel());
+        add(createLowerPanel());
+        //nextButton.addActionListener(new NextButtonListener());
+        //accusationButton.addActionListener(new AccusationButtonListener());
+        repaint();
+    }
 	
 
 	public static void main(String[] args) {
@@ -130,9 +149,15 @@ public class GameControlPanel extends JPanel {
     class NextButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            CardsPanel.getInstance().refresh();
             Board.getInstance().nextButtonPressed();
 
+        }
+    }
+
+    class AccusationButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Board.getInstance().accusationButtonPressed();
         }
     }
 }
