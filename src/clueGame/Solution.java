@@ -1,5 +1,13 @@
 package clueGame;
 import java.util.ArrayList;
+
+//Solution Class
+//Author: William Warner
+//Created March 15th, 2023
+//No Collaboraters or outside sources
+
+//Solution represents a solution in the ClueGame
+//a solution consists of a person card, a room card, and a weapon card
 public class Solution {
     private Card weaponCard;
     private Card personCard;

@@ -32,7 +32,7 @@ public class FileInitTests306 {
 		// Board is singleton, get the only instance
 		board = Board.getInstance();
 		// set the file names to use my config files
-		board.setConfigFiles("/Users/wjwarner24/desktop/Clue2/src/data/ClueLayout306.csv", "/Users/wjwarner24/desktop/Clue2/src/data/ClueSetup306.txt");
+		board.setConfigFiles("./src/data/ClueLayout306.csv", "./src/data/ClueSetup306.txt");
 		// Initialize will load BOTH config files
 		board.initialize();
 	}

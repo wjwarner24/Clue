@@ -1,0 +1,149 @@
+commit ea8aee43b6640805addd4672c7600a92b9d4ce88
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Fri Apr 28 13:55:44 2023 -0600
+
+    added jar file
+
+commit 9fcc6134b9999905d666ad742d8e0a786c2f37a7
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Fri Apr 28 13:55:17 2023 -0600
+
+    added final game functionality, game now works as intended. On my machine the GameControlPanel bugs and clears out whenever a suggestion is made
+
+commit 0436c5b8662f27d1ac28f3fe4e018d33fe63b0b4
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Thu Apr 20 14:16:38 2023 -0600
+
+    added many comments to BoardCell class
+
+commit 7650daaa688636de06c822715fe13d3d38b4b5bd
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Thu Apr 20 14:11:34 2023 -0600
+
+    called repain() only once after unhighlighting cells instead of calling it after each cell is marked as unhighlighted
+
+commit e176bbc7f9399940ab3452a7f70251f4700859fa
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Thu Apr 20 14:07:46 2023 -0600
+
+    made helper methods in Board class to randomly set the solution and deal cards. simplified code within initialize()
+
+commit 2455f7c03d8053f5eca11ff0bc7eb04ee4c13dd8
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Wed Apr 19 22:15:48 2023 -0600
+
+    Sorry for undescriptive commit comments, but I changed a ton of things. Made it so that a Player converts its string into a Color once in the constructor, instead of several places elsewhere. Added many many comments, removed weird spacing, removed old/unhelpful comments.
+
+commit 970791ba37d3c93fe10f0a46d15404cc4c919a61
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Wed Apr 19 21:50:07 2023 -0600
+
+    cleaned up weirdly spaced code in many locations and unecessary/unhelpful comments
+
+commit 9d4d38cf7f71a5ffc5b6cd57608a837092a54c69
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Wed Apr 19 21:46:59 2023 -0600
+
+    removed unused Font import in BoardCell class
+
+commit 3ea19cc10bf54a44291db26a5a68f7b17f6f98ac
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Wed Apr 19 21:46:26 2023 -0600
+
+    removed unused java import
+
+commit 1312060bb0deb371a2c1e171f6da421202218c84
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Wed Apr 19 21:45:49 2023 -0600
+
+    removed unused variables in Board class for xCoord and yCoord or mouse click
+
+commit a488b044a8fb7e9090ac3833d39e51c4041215f1
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Wed Apr 19 21:22:13 2023 -0600
+
+    Added game flow functionality for selecting a move, and clicking next to advance the game
+
+commit 31e459e5182e080efcf1050f6d418b9b61a43cc1
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Fri Apr 7 20:56:58 2023 -0600
+
+    added CardsPanel.java which displays the cards in hand and the seen cards
+
+commit 0d9eb82ef5369fcfade06ba78ed872fa19371ee7
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Thu Apr 6 20:31:44 2023 -0600
+
+    added GameControlPanel.java for the control panel with setter methods for data
+
+commit 81fad046b9d729f159d88c04950ef7047728f70f
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Wed Apr 5 20:20:54 2023 -0600
+
+    added GameSolutionTests and ComputerAITests. also added Solution class. All tests pass and game now correctly handles accusations, suggestions, and computer movement
+
+commit 7c61c9918415cbd41a1a05ae612cd4aef95d0332
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Sun Apr 2 15:55:58 2023 -0600
+
+    added more comments
+
+commit 699c456a6d6f3d9e8d815d8557e45df571aff733
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Sun Apr 2 15:38:09 2023 -0600
+
+    added functionality for creating cards, generating a solution, and dealing cards to each player. created new test class 'GameSetupTests.java' to test this. All tests pass. I forgot to make a previous commit when tests stopped erroring. Sorry
+
+commit 1ae3220beae1db1e81ec49368adbcfaac50e945f
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Wed Mar 29 22:16:02 2023 -0600
+
+    added comments to calcTargets method
+
+commit cc59b5718f026b74f71fc5b6d720caaafc2f14ab
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Wed Mar 29 22:13:14 2023 -0600
+
+    changed name of array that parses a line in the setup file from 'arr' to 'setupWords'
+
+commit 7fe3de5761b374ef87f23ac95a6451dce61f5439
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Wed Mar 29 22:07:49 2023 -0600
+
+    added isWalkway() method to BoardCell to simplify code
+
+commit 300bd78ba185ab99f29691e5426c7379202b09fd
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Wed Mar 29 21:47:04 2023 -0600
+
+    added comments specifying how the loadLayoutConfig() method adds door directions, label cells, center cells, and passage destinations
+
+commit 584b9380a1be00bf1bd83f018b8a3c7136de5bc3
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Wed Mar 29 21:09:50 2023 -0600
+
+    changed name of adjacent BoardCell in calcTargets() from 't' to 'adjCell'
+
+commit b333cfda1d455ec060f9d494969b276848683b45
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Wed Mar 29 21:04:59 2023 -0600
+
+    added comments detailing how adding adjacencies for secret passages work
+
+commit cc3d2f02d7b8568938c8d3c81c67413cead32e09
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Wed Mar 29 21:01:51 2023 -0600
+
+    added comments specifying how the adjacency additions for doorways and room center cells works
+
+commit 2850df9e9a4dd49ea24e12b26baf3f33932596b4
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Wed Mar 29 20:58:53 2023 -0600
+
+    changed 'chars' name to 'cellNames', more fitting variable name
+
+commit 66fccd7ae79c0128e5f053eb9b095a5cf417a236
+Author: wjwarner24 <wjwarner24@gmail.com>
+Date:   Wed Mar 29 20:57:46 2023 -0600
+
+    first commit since I had to restructure files

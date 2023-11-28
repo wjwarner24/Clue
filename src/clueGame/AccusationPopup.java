@@ -1,7 +1,16 @@
 package clueGame;
 import java.awt.*;
 import javax.swing.*;
-import java.util.ArrayList;
+
+//AccusationPopup Class
+//Author: William Warner
+//Created April 22nd, 2023
+//No Collaboraters or outside sources
+
+//AccusationPopup is the popup that shows when you make an accusation
+//asks for a person, room, and weapon
+//if you guess the wrong solution, you lose the game
+//if you guess the correct solution, you win the game
 
 public class AccusationPopup extends JPanel {
     private String selectedPersonCard;

@@ -1,9 +1,18 @@
 package clueGame;
 import javax.swing.*;
-import javax.swing.border.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
+
+//SuggestionPopup Class
+//Author: William Warner
+//Created April 22nd, 2023
+//No Collaboraters or outside sources
+
+//SuggestionPopup is the popup that shows when you make an suggestion
+//asks for a room and a weapon
+//the suggestion will attempt to be disproved by the other players
+//the suggestion and the result of the suggestion will be displayed
+//in the control panel
+
 
 public class SuggestionPopup extends JPanel {
     private String selectedPersonCard;

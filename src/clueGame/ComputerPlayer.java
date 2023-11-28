@@ -209,7 +209,7 @@ public class ComputerPlayer extends Player {
                 GameControlPanel.getInstance().setGuessResult("Guess was disproved by " + disprovingPlayer.getName());
                 Board.getInstance().getPlayers().get(turnNum).addSeenCard(disprovedCard); //make player see disproved card
             }
-            GameControlPanel.getInstance().refresh(); //TODO: make this not bug out the game control panel
+            //GameControlPanel.getInstance().refresh(); //TODO: make this not bug out the game control panel
 
         }
         super.setFinished(true);

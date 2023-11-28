@@ -18,7 +18,7 @@ public class ClueGame extends JFrame {
 
     private ClueGame() {
         board.setSize(550,750);
-        board.setConfigFiles("/Users/wjwarner24/desktop/Clue2/src/data/ClueLayout.csv", "/Users/wjwarner24/desktop/Clue2/src/data/ClueSetup.txt");		
+        board.setConfigFiles("./src/data/ClueLayout.csv", "./src/data/ClueSetup.txt");		
 		board.initialize();
         cardsPanel.setSize(300,750);
         gameControlPanel.setSize(850,180);
