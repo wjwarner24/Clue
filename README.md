@@ -1,4 +1,4 @@
-Welcome to Clue2!
+Welcome to Clue!
 
 Download the files and either run Clue2.jar using $java -jar Clue2.jar
 
