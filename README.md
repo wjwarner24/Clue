@@ -5,6 +5,8 @@ Download the files and either run Clue2.jar using $java -jar Clue2.jar
 The goal is to find the solution to the game before the other computerPlayers, 
 just like the real clue game!
 
+Sometimes after clicking on elements, the panels go blank. Simply resize the window and it will fix itself.
+
 At the start of the game, you automatically draw cards to your hand representing a room, a player, and a weapon.
 The same is true for the other computerPlayers, and the cards that comprise the solution to the game are not drawn into anybody's hand.
 
